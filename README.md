@@ -15,4 +15,4 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-![alt text](assets/images/Screenshot1.jpg)
+<img scr="asstes/images/Screenshot1" hight="100"/>
