@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Frequently Bought Foods",
+                "Popular foods",
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -94,7 +94,5 @@ class _HomePageState extends State<HomePage> {
       child: BoughtFood(popularModel),
     );
   }
-/*
- children: _foods.map(_buildFoodItems).toList(),
- */
+
 }

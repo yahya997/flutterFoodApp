@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage>
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                     image: new ExactAssetImage(
-                                        'assets/images/turkey.png'),
+                                        'assets/images/profile.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 )),

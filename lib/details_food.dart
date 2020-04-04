@@ -320,71 +320,7 @@ class _DetailsFoodState extends State<DetailsFood> {
     );
   }
 
-  Widget _comments() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              CircleAvatar(
-                backgroundImage:
-                    ExactAssetImage("assets/images/placeholder_bg.png"),
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Christina'),
-                  Text('1 hour'),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Text(
-              'Weasel the jeeper goodness inconsiderately spelled so ubiquitous amused knitted and altruistic amiable...'),
-        ],
-      ),
-    );
-  }
 
-  Widget _commentTextEntry() {
-    return Container(
-      color: Color.fromRGBO(241, 245, 247, 1),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Flexible(
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Write Comment here!',
-                      contentPadding:
-                          EdgeInsets.only(left: 16, top: 24, bottom: 28)),
-                ),
-              ),
-              FlatButton(
-                child: Text(
-                  'SEND',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-        ],
-      ),
-    );
-  }
 
   _getCurrentUser() async {
     _firebaseUser = await _auth.currentUser();
@@ -452,6 +388,7 @@ class _DetailsFoodState extends State<DetailsFood> {
             ),
             SizedBox(height: 50),
             RatingBar(
+              itemSize: 30,
               initialRating: updateRating,
               minRating: 1,
               direction: Axis.horizontal,

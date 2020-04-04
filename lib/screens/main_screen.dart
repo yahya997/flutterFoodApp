@@ -26,8 +26,8 @@ class _MainScreenState extends State<MainScreen> {
   int currentTabIndex = 0;
 
   HomePage homePage;
-  CartPage orderPage;
-  OrderPage favoritePage;
+  CartPage cartPage;
+  OrderPage orderPage;
   ProfilePage profilePage;
 
   List<Widget> pages;
@@ -36,10 +36,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     homePage=HomePage();
-    orderPage = CartPage();
-    favoritePage = OrderPage();
+    cartPage = CartPage();
+    orderPage = OrderPage();
     profilePage = ProfilePage();
-    pages = [homePage,orderPage,favoritePage,profilePage];
+    pages = [homePage,cartPage,orderPage,profilePage];
     currentPage=homePage;
 
     //getUser
@@ -66,11 +66,11 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            title: Text('Orders'),
+            title: Text('Cart'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            title: Text('Favorite'),
+            icon: Icon(Icons.receipt),
+            title: Text('Orders'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

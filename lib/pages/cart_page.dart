@@ -418,7 +418,7 @@ class _CartPageState extends State<CartPage> {
             });
   }
 
-    _getSubTotal()  {
+     _getSubTotal()  {
      Firestore.instance.collection('Cart').getDocuments().then((value) {
       //print(value.documents);
       for(var item in value.documents) {
