@@ -15,5 +15,5 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-<img scr="assets/images/Screenshot1.jpg" width=50>
-<img src="assets/images/Screenshot1.jpg" width="350" alt="accessibility text">
+<img src="assets/images/Screenshot1.jpg" width="300" alt="accessibility text">
+<img src="assets/images/Screenshot2.jpg" width="300" alt="accessibility text">
