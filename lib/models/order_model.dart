@@ -1,8 +1,9 @@
 class OrderModel{
-  String user_id;
-  String subTotal,discount;
+  String documentId;
+  int totalPrice;
+  String address;
 
-  OrderModel(this.user_id, this.subTotal, this.discount);
+  OrderModel({this.documentId,this.totalPrice, this.address});
 
 
 }

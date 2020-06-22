@@ -1,31 +1,50 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_food/common/Common.dart';
-import 'package:flutter_app_food/screens/main_screen.dart';
-import 'package:flutter_app_food/sign_in.dart';
-import 'package:flutter_app_food/test.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'HomeScreen.dart';
+import 'package:flutter_app_food/const.dart';
+import 'package:flutter_app_food/provider/cart_item.dart';
+import 'package:flutter_app_food/screens/food_details.dart';
+import 'package:flutter_app_food/screens/food_list_screen.dart';
+import 'package:flutter_app_food/screens/home_screen.dart';
+import 'package:flutter_app_food/screens/info_screen.dart';
+import 'package:flutter_app_food/screens/login_screen.dart';
+import 'package:flutter_app_food/screens/search_screen.dart';
+import 'package:flutter_app_food/screens/splash_screen.dart';
+import 'package:flutter_app_food/stores/login_store.dart';
+import 'package:provider/provider.dart';
 
-void main() async{
-  runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(DevicePreview(builder: (context) => MyApp(),));
 }
 
 class MyApp extends StatelessWidget {
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Food Delivery',
-      theme: ThemeData(
-        primaryColor: Colors.blueAccent,
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        Provider<LoginStore>(
+          create: (_) => LoginStore(),
+        ),
+        ChangeNotifierProvider<CartItem>(
+          create: (context) => CartItem(),
+        ),
+      ],
+      child: MaterialApp(
+
+        theme: ThemeData(primaryColor: primaryColor,primaryColorLight: primaryColorLight),
+        builder: DevicePreview.appBuilder,
+        debugShowCheckedModeBanner: false,
+        initialRoute: SplashScreen.id,
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          HomeScreen.id: (context) => HomeScreen(),
+          SplashScreen.id: (context) => SplashScreen(),
+          InfoScreen.id: (context) => InfoScreen(),
+          FoodListScreen.id: (context) => FoodListScreen(),
+          FoodDetails.id: (context) => FoodDetails(),
+          SearchScreen.id: (context) => SearchScreen(),
+        },
       ),
-      home: MainScreen(),
     );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_food/const.dart';
 
 class HomeTopInfo extends StatelessWidget{
 
@@ -19,7 +20,7 @@ class HomeTopInfo extends StatelessWidget{
               Text("you like to eat?", style: textStyle,)
             ],
           ),
-          Icon(Icons.notifications_none, size: 30.0, color: Theme.of(context).primaryColor,),
+          Icon(Icons.notifications_none, size: 30.0, color: primaryColor,),
         ],
       ),
     );

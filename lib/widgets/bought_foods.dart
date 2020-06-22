@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_food/models/popular_model.dart';
-import 'package:flutter_app_food/popular_detalis_food.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class BoughtFood extends StatefulWidget {
@@ -21,11 +20,11 @@ class _BoughtFoodState extends State<BoughtFood> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      /*onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return PopularDetailsFood(widget.popularModel);
         }));
-      },
+      },*/
       child: ClipRRect(
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),

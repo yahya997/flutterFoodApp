@@ -1,7 +1,6 @@
-class Category{
-  final String categoryName;
-  final String imagePath;
-  final int numberOfItems;
+class CategoryModel {
+  String id, name, image;
 
-  Category({this.categoryName, this.imagePath, this.numberOfItems});
+  CategoryModel(this.id, this.name, this.image);
+
 }

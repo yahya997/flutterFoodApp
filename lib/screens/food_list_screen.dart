@@ -1,65 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_food/details_food.dart';
+import 'package:flutter_app_food/models/category_model.dart';
 import 'package:flutter_app_food/models/food_model.dart';
-import 'package:flutter_app_food/widgets/food_card.dart';
+import 'package:flutter_app_food/screens/food_details.dart';
+import 'package:flutter_app_food/services/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class FoodList extends StatefulWidget {
-  String nameCategory, categoryId;
+import '../const.dart';
 
-  FoodList(this.nameCategory, this.categoryId);
+class FoodListScreen extends StatefulWidget {
+  static String id = 'FoodListScreen';
 
   @override
-  _FoodListState createState() => _FoodListState();
+  _FoodListScreenState createState() => _FoodListScreenState();
 }
 
-class _FoodListState extends State<FoodList> {
-  List<FoodModel> foodList;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+class _FoodListScreenState extends State<FoodListScreen> {
+  final _services = Services();
 
   @override
   Widget build(BuildContext context) {
+    CategoryModel category = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
           title: Text(
-            widget.nameCategory,
+            category.name,
             style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Colors.white,
         ),
         body: StreamBuilder(
-          stream: Firestore.instance.collection('Foods').where('category_id',isEqualTo: widget.categoryId).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          stream: _services.loadFoods(category.id),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<FoodModel>> snapshot) {
+            if (snapshot.hasError)
+              return Center(
+                child: new Text(
+                  'Error: ${snapshot.error}',
+                ),
+              );
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return new Text('Loading ...');
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               default:
-                var data = snapshot.data.documents;
-                foodList = List<FoodModel>();
-                for (var item in data) {
-                  //if (item.data['category_id'] == widget.categoryId) {
-                    FoodModel food = FoodModel(
-                      item.data['id'],
-                      item.data['name'],
-                      item.data['image'],
-                      item.data['category_id'],
-                      item.data['price'],
-                      item.data['discount'],
-                      item.data['rating'],
-                      item.data['description'],
-                    );
-                    foodList.add(food);
-                    print(food.name);
-                  //}
-                }
+                List<FoodModel> foodList = snapshot.data;
                 return ListView.builder(
                   // ignore: missing_return
                   itemBuilder: (context, position) {
@@ -72,14 +61,12 @@ class _FoodListState extends State<FoodList> {
         ));
   }
 
-  Widget _singleFoodList(FoodModel foodList) {
+  Widget _singleFoodList(FoodModel foodModel) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return DetailsFood(foodList);
-          }));
+          Navigator.pushNamed(context, FoodDetails.id,arguments: foodModel);
         },
         child: Card(
           child: ClipRRect(
@@ -90,9 +77,12 @@ class _FoodListState extends State<FoodList> {
               children: <Widget>[
                 Container(
                   height: 230.0,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   child: Image.network(
-                    foodList.image,
+                    foodModel.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -117,7 +107,7 @@ class _FoodListState extends State<FoodList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        foodList.name,
+                        foodModel.name,
                         style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -126,16 +116,17 @@ class _FoodListState extends State<FoodList> {
                       RatingBar(
                         ignoreGestures: true,
                         itemSize: 20,
-                        initialRating: double.parse(foodList.rating),
+                        initialRating: checkDouble(foodModel.rating) / foodModel.ratingCount,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
                         itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
+                        itemBuilder: (context, _) =>
+                            Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
                       ),
                     ],
                   ),

@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_food/food_list.dart';
+import 'package:flutter_app_food/models/category_model.dart';
+import 'package:flutter_app_food/screens/food_list_screen.dart';
 
-class FoodCard extends StatelessWidget{
+class SingleCategory extends StatelessWidget {
 
-  final String categoryName;
-  final String imagePath;
-  final String id;
+  CategoryModel categoryModel;
 
-  FoodCard({this.categoryName, this.imagePath, this.id});
+
+  SingleCategory({this.categoryModel});
 
   @override
   Widget build(BuildContext context){
     return GestureDetector(
       onTap:  (){
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context){
-              return FoodList(categoryName,id);
-            }));
+       Navigator.pushNamed(context, FoodListScreen.id,arguments:categoryModel);
       },
       child: Container(
         margin: EdgeInsets.only(right: 20.0),
@@ -26,7 +23,7 @@ class FoodCard extends StatelessWidget{
             child: Row(
               children: <Widget>[
                 Image.network(
-                  imagePath,
+                  categoryModel.image,
                   height: 65.0,
                   width: 65.0,
                 ),
@@ -34,8 +31,8 @@ class FoodCard extends StatelessWidget{
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(categoryName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),),
-                    Text("$id Kinds",)
+                    Text(categoryModel.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),),
+                    Text(" Kinds",)
                   ],
                 ),
               ],

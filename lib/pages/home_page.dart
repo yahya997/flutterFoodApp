@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_food/models/food_model.dart';
+import 'package:flutter_app_food/const.dart';
 import 'package:flutter_app_food/models/popular_model.dart';
+import 'package:flutter_app_food/services/services.dart';
 import 'package:flutter_app_food/widgets/bought_foods.dart';
-import '../widgets/home_top_info.dart';
-import '../widgets/food_category.dart';
-import '../widgets/search_file.dart';
-
+import 'package:flutter_app_food/widgets/food_category.dart';
+import 'package:flutter_app_food/widgets/home_top_info.dart';
+import 'package:flutter_app_food/widgets/search_field.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,7 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<PopularModel> foodList;
+  final _services = Services();
+
+
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold);
@@ -25,9 +27,13 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           HomeTopInfo(),
           FoodCategory(),
-          SizedBox(height: 20.0,),
+          SizedBox(
+            height: 20.0,
+          ),
           SearchField(),
-          SizedBox(height: 20.0,),
+          SizedBox(
+            height: 20.0,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -39,11 +45,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               GestureDetector(
-                onTap: (){},
+                onTap: () {},
                 child: Text(
                   "View all",
                   style: TextStyle(
-                    color: Colors.orangeAccent,
+                    color: primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18.0,
                   ),
@@ -52,47 +58,40 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(height: 20.0),
-          StreamBuilder(
-             stream: Firestore.instance.collection('Popular').snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-              switch(snapshot.connectionState){
-                case ConnectionState.waiting:
-                  return new Text('Loading ...');
-                default:
-                  var data = snapshot.data.documents;
-                  foodList = List<PopularModel>();
-                  for (var item in data) {
-                    PopularModel food = PopularModel(
-                        item.data['id'],
-                        item.data['name'],
-                        item.data['image'],
-                        item.data['price'],
-                        item.data['discount'],
-                        item.data['rating'],
-                        item.data['description'],
-                      );
-                      foodList.add(food);
+          StreamBuilder<QuerySnapshot>(
+              stream: _services.loadPopularProduct(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<PopularModel> popularFoods =[];
+                  for (var doc in snapshot.data.documents) {
+                    PopularModel popularModel = PopularModel(
+                      doc.data['id'],
+                      doc.data['name'],
+                      doc.data['image'],
+                      doc.data['price'],
+                      doc.data['discount'],
+                      doc.data['rating'],
+                      doc.data['description'],
+                    );
+                    popularFoods.add(popularModel);
                   }
 
-
-              return Column(
-                children: foodList.map(_buildFoodItems).toList(),
-              );
-              }
-            }
-          ),
+                  return Column(
+                    children: popularFoods.map(_buildFoodItems).toList(),
+                  );
+                }else {
+                  return Center(child: Text('Loading...'));
+                }
+              }),
         ],
       ),
     );
   }
 
-
-  Widget _buildFoodItems(PopularModel popularModel){
+  Widget _buildFoodItems(PopularModel popularModel) {
     return Container(
       margin: EdgeInsets.only(bottom: 20.0),
       child: BoughtFood(popularModel),
     );
   }
-
 }
