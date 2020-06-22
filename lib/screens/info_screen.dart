@@ -29,10 +29,6 @@ class _InfoScreenState extends State<InfoScreen> {
         child: new Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            new Image.asset(
-              'assets/bg_img.jpg',
-              fit: BoxFit.fitHeight,
-            ),
             new Scaffold(
               backgroundColor: Colors.transparent,
               body: Form(

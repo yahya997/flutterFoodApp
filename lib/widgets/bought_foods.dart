@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_food/models/food_model.dart';
 
 import 'package:flutter_app_food/models/popular_model.dart';
+import 'package:flutter_app_food/screens/food_details.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../const.dart';
 
 class BoughtFood extends StatefulWidget {
 
-  PopularModel popularModel;
+  FoodModel popularModel;
 
 
   BoughtFood(this.popularModel);
@@ -20,11 +24,9 @@ class _BoughtFoodState extends State<BoughtFood> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      /*onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return PopularDetailsFood(widget.popularModel);
-        }));
-      },*/
+      onTap: (){
+        Navigator.pushNamed(context, FoodDetails.id,arguments:widget.popularModel );
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
@@ -72,7 +74,7 @@ class _BoughtFoodState extends State<BoughtFood> {
                       RatingBar(
                         ignoreGestures: true,
                         itemSize: 20,
-                        initialRating: double.parse(widget.popularModel.rating),
+                        initialRating: checkDouble(widget.popularModel.rating) / widget.popularModel.ratingCount,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,

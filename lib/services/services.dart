@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app_food/const.dart';
 import 'package:flutter_app_food/models/comment_model.dart';
 import 'package:flutter_app_food/models/food_model.dart';
+import 'package:flutter_app_food/models/popular_model.dart';
 import 'package:flutter_app_food/models/user_model.dart';
 
 class Services {
@@ -17,8 +18,8 @@ class Services {
     documentRef.setData(data);
   }
 
-  Stream<QuerySnapshot> loadPopularProduct() {
-    return _firestore.collection(kPopular).snapshots();
+  Stream<List<FoodModel>> loadPopularProduct() {
+    return _firestore.collection(kPopular).snapshots().map(toFoodModelList);
   }
 
   Stream<QuerySnapshot> loadCategory() {

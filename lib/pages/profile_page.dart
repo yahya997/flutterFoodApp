@@ -24,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage>
   File _image1;
   UserModel userModel;
   bool _status = true;
+  final _auth =FirebaseAuth.instance;
 
   final FocusNode myFocusNode = FocusNode();
   TextEditingController _nameUserController = TextEditingController();
@@ -40,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginStore>(builder: (_, loginStore, __) {
+    String userId= Provider.of<LoginStore>(context).firebaseUser.uid;
       return new Scaffold(
           body: new Container(
         color: Colors.white,
@@ -124,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage>
                 ),
                 StreamBuilder(
                   stream:
-                      _services.getUserNameById(loginStore.firebaseUser.uid),
+                      _services.getUserNameById(userId),
                   builder: (BuildContext context,
                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError)
@@ -134,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage>
                         return new Text('Loading ...');
 
                       default:
-                        print(loginStore.firebaseUser.uid);
+                        print(userId);
                         userModel = UserModel(
                           snapshot.data['name'],
                           snapshot.data['phone'],
@@ -310,7 +311,7 @@ class _ProfilePageState extends State<ProfilePage>
                                     onPressed: () {
                                       setState(() {
                                         _status = true;
-                                        loginStore.signOut(context);
+                                        _auth.signOut();
                                         Navigator.pushNamedAndRemoveUntil(
                                             context,
                                             LoginScreen.id,
@@ -320,7 +321,7 @@ class _ProfilePageState extends State<ProfilePage>
                                   ),
                                 ),
                                 !_status
-                                    ? _getActionButtons(loginStore.firebaseUser.uid)
+                                    ? _getActionButtons(userId)
                                     : new Container(),
                               ],
                             ),
@@ -334,7 +335,7 @@ class _ProfilePageState extends State<ProfilePage>
           ],
         ),
       ));
-    });
+
   }
 
   @override

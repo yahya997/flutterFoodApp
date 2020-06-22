@@ -237,7 +237,8 @@ class _FoodDetailsState extends State<FoodDetails> {
             RatingBar(
               ignoreGestures: true,
               itemSize: 40,
-              initialRating: checkDouble(foodModel.rating) / foodModel.ratingCount,
+              initialRating:
+                  checkDouble(foodModel.rating) / foodModel.ratingCount,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
@@ -351,7 +352,6 @@ class _FoodDetailsState extends State<FoodDetails> {
               textColor: Colors.white,
               child: new Text('Comment'),
               onPressed: () {
-
                 Map<String, dynamic> data = {
                   'food_id': foodModel.id,
                   'comment': _commentUserController.text,
@@ -361,15 +361,31 @@ class _FoodDetailsState extends State<FoodDetails> {
                 };
                 var documentRef = _firestore.collection(kComment).document();
                 documentRef.setData(data).then((value) {
-                  print(foodModel.id);
-                  print('yahyahaya');
-                  double sumRating =foodModel.rating+updateRating;
-                  int ratingCount = foodModel.ratingCount+1;
-                  var doc = _firestore.collection(kFoods).document(foodModel.id);
-                  doc.updateData({
-                    'rating' : sumRating,
-                    'ratingCount': ratingCount
-                  });
+                  if (foodModel.category_id != null) {
+                    print(foodModel.category_id);
+                    print(foodModel.id);
+                    print(kFoods);
+                    double sumRating = foodModel.rating + updateRating;
+                    int ratingCount = foodModel.ratingCount + 1;
+                    var doc =
+                        _firestore.collection(kFoods).document(foodModel.id);
+                    doc.updateData({
+                      'rating': sumRating,
+                      'ratingCount': ratingCount
+                    }).then((value) => print('add to food'));
+                  } else {
+                    print(foodModel.category_id);
+                    print(foodModel.id);
+                    print(kPopular);
+                    double sumRating = foodModel.rating + updateRating;
+                    int ratingCount = foodModel.ratingCount + 1;
+                    var doc =
+                        _firestore.collection(kPopular).document(foodModel.id);
+                    doc.updateData({
+                      'rating': sumRating,
+                      'ratingCount': ratingCount
+                    }).then((value) => print('add To Popluar'));
+                  }
                 });
                 Navigator.of(context).pop();
               },
@@ -379,7 +395,6 @@ class _FoodDetailsState extends State<FoodDetails> {
       },
     );
   }
-
 
   _getCurrentUser() async {
     _firebaseUser = await _auth.currentUser();
@@ -484,7 +499,9 @@ class _FoodDetailsState extends State<FoodDetails> {
                 SizedBox(
                   width: 50,
                 ),
-                Text(commentModel.timeStamp.toDate().toIso8601String())
+                Flexible(
+                    child: Text(timeAgoSinceDate(
+                        commentModel.timeStamp.toDate().toIso8601String())))
               ],
             ),
             SizedBox(

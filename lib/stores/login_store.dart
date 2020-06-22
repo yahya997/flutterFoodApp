@@ -23,6 +23,8 @@ abstract class LoginStoreBase with Store {
   GlobalKey<ScaffoldState> loginScaffoldKey = GlobalKey<ScaffoldState>();
   @observable
   GlobalKey<ScaffoldState> otpScaffoldKey = GlobalKey<ScaffoldState>();
+  @observable
+  GlobalKey<ScaffoldState> profileScaffoldKey = GlobalKey<ScaffoldState>();
 
   @observable
   FirebaseUser firebaseUser;
